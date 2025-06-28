@@ -18,6 +18,8 @@ class Chatbot {
     init() {
         if (window.app && window.app.addMessage) {
             window.app.addMessage('ai', `Bonjour ! Je suis votre assistant IA (${this.aiRole}). Comment puis-je vous aider aujourd'hui ?`);
+            // Initialisez l'historique avec le message système pour l'IA
+            this.conversationHistory = [{ role: 'system', content: this.systemMessage }];
         } else {
             console.error("Chatbot: window.app.addMessage n'est pas disponible. Impossible d'afficher le message initial.");
         }
@@ -53,9 +55,10 @@ class Chatbot {
                 },
                 // Envoyer l'historique complet de la conversation pour que l'IA ait le contexte
                 body: JSON.stringify({
-                    prompt: userPrompt, // Le prompt actuel
-                    history: this.conversationHistory, // L'historique des échanges
-                    systemMessage: this.systemMessage // Le message système spécifique à cette instance
+                    // Ne plus envoyer 'prompt' séparément, il est déjà dans 'history'
+                    // La première entrée de l'historique est le message système
+                    history: this.conversationHistory,
+                    // systemMessage n'est plus nécessaire ici si déjà inclus dans le premier élément de history
                 }),
             });
 
@@ -71,7 +74,7 @@ class Chatbot {
             if (aiResponse) {
                 window.app.addMessage('ai', aiResponse);
                 // Ajouter la réponse de l'IA à l'historique
-                this.conversationHistory.push({ role: 'ai', content: aiResponse });
+                this.conversationHistory.push({ role: 'assistant', content: aiResponse }); // Utiliser 'assistant' pour le rôle de l'IA
             } else {
                 window.app.addMessage('error', "L'IA n'a pas pu générer de réponse.");
             }
@@ -88,7 +91,8 @@ class Chatbot {
      * Vide l'historique de la conversation.
      */
     clearHistory() {
-        this.conversationHistory = [];
+        // Réinitialiser l'historique en gardant uniquement le message système
+        this.conversationHistory = [{ role: 'system', content: this.systemMessage }];
         window.app.addMessage('system', "Historique de la conversation vidé.");
     }
 }

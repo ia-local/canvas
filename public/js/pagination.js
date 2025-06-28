@@ -8,7 +8,7 @@ const iconPages = [
         { label: 'Caméra', iconClass: 'fa-solid fa-camera', bgColor: 'bg-green-100', textColor: 'text-green-700' },
         { label: 'Stockage', iconClass: 'fa-solid fa-hard-drive', bgColor: 'bg-yellow-100', textColor: 'text-yellow-700' },
         { label: 'Terminal', iconClass: 'fa-solid fa-terminal', bgColor: 'bg-red-100', textColor: 'text-red-700' },
-        { label: 'Paramètres', iconClass: 'fa-solid fa-gear', bgColor: 'bg-gray-200', textColor: 'text-gray-700' },
+        { label: 'Paramètres', iconClass: 'fa-solid fa-gear', bgColor: 'bg-gray-200', textColor: 'text-gray-700', type: 'settings' }, // <-- NOUVEAU: type 'settings'
         { label: 'Batterie', iconClass: 'fa-solid fa-battery-full', bgColor: 'bg-orange-100', textColor: 'text-orange-700' },
         { label: 'RAM', iconClass: 'fa-solid fa-memory', bgColor: 'bg-cyan-100', textColor: 'text-cyan-700' },
         { label: 'Réseau', iconClass: 'fa-solid fa-wifi', bgColor: 'bg-teal-100', textColor: 'text-teal-700' },
@@ -26,6 +26,7 @@ const iconPages = [
         { label: 'Cloud', iconClass: 'fa-solid fa-cloud', bgColor: 'bg-red-200', textColor: 'text-red-800' },
         { label: 'WebXR', iconClass: 'fa-solid fa-cube', bgColor: 'bg-amber-100', textColor: 'text-amber-700' },
         { label: 'Conseiller Dev', iconClass: 'fa-solid fa-code', bgColor: 'bg-cyan-200', textColor: 'text-cyan-800', type: 'chatbot', role: 'expert en développement web et mobile' },
+        { label: 'Telegram', iconClass: 'fa-brands fa-telegram', bgColor: 'bg-sky-100', textColor: 'text-sky-700', type: 'telegram', botUsername: 'meta_Pibot', chatId: '' }, // chatId initialisé vide ici, sera chargé par le modal
     ]
 ];
 
@@ -37,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPageBtn = document.getElementById('nextPageBtn');
     const pageIndicators = document.getElementById('pageIndicators');
 
-    // --- DÉFINITION DE createIconElement ICI ---
     function createIconElement(iconData) {
         const iconItem = document.createElement('div');
         iconItem.classList.add('icon-item', 'group');
@@ -56,7 +56,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     window.app.setActiveChatbot(chatbotInstance);
                     window.app.showChatScreen();
-                } else if (iconData.label === 'Terminal') {
+                } else if (iconData.type === 'telegram' && window.TelegramBotIntegration) {
+                    // Charger dynamiquement le chatId depuis la configuration via l'API
+                    // Laisser TelegramBotIntegration charger sa propre configuration via /api/config
+                    const telegramBotInstance = new window.TelegramBotIntegration({
+                        sendApiUrl: 'http://localhost:3000/api/telegram/send',
+                        getApiUrl: 'http://localhost:3000/api/telegram/get_responses',
+                        botUsername: iconData.botUsername,
+                        // chatId n'est plus passé ici, il sera chargé dans TelegramBotIntegration
+                    });
+                    window.app.setActiveChatbot(telegramBotInstance);
+                    window.app.showChatScreen();
+                } else if (iconData.type === 'settings' && window.modal) { // <-- GESTION DE L'ICÔNE PARAMÈTRES
+                    window.modal.openModal('settings'); // Ouvre le modal des paramètres
+                }
+                else if (iconData.label === 'Terminal') {
                     const commandToExecute = prompt("Entrez la commande terminal à exécuter (ex: 'ls -la', 'pwd', 'git status'):");
                     if (commandToExecute) {
                         executeTerminalCommand(commandToExecute);
@@ -72,15 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.app.showChatScreen();
                 }
             } else {
-                console.error("window.app ou window.Chatbot n'est pas complètement initialisé.");
+                console.error("window.app, window.Chatbot, window.TelegramBotIntegration, ou window.modal n'est pas complètement initialisé.");
                 window.app.addMessage('error', "Erreur interne: l'application n'est pas prête.");
             }
         });
         return iconItem;
     }
-    // --- FIN DE DÉFINITION DE createIconElement ---
 
-    // --- DÉFINITION DE renderIcons ICI (qui appelle createIconElement) ---
     function renderIcons() {
         iconPagesContainer.innerHTML = '';
         const iconsToRender = iconPages[currentPage];
@@ -92,11 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updatePaginationControls();
     }
-    // --- FIN DE DÉFINITION DE renderIcons ---
 
-    // --- DÉFINITION DE updatePaginationControls ICI ---
     function updatePaginationControls() {
-        // Logique de mise à jour des boutons prev/next et des indicateurs de page
         prevPageBtn.disabled = currentPage === 0;
         nextPageBtn.disabled = currentPage === iconPages.length - 1;
 
@@ -112,10 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pageIndicators.appendChild(indicator);
         });
     }
-    // --- FIN DE DÉFINITION DE updatePaginationControls ---
 
-
-    // --- DÉFINITION DE executeTerminalCommand ICI ---
     async function executeTerminalCommand(command) {
         window.app.showChatScreen();
         window.app.addMessage('user', `Exécution de commande: \`${command}\``);
@@ -154,8 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.app.setLoading(false);
         }
     }
-    // --- FIN DE DÉFINITION DE executeTerminalCommand ---
-
 
     // Écouteurs d'événements pour la pagination
     prevPageBtn.addEventListener('click', () => {
@@ -172,5 +176,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    renderIcons(); // Appel initial pour afficher la première page d'icônes
+    renderIcons();
 });

@@ -172,5 +172,51 @@
     "interactionId": "7b36f070-202e-41a0-bd87-602157f47fa3",
     "userPrompt": "bonjour...",
     "aiResponse": "Bonjour ! Je suis ravi de vous voir ! Je suis un assistant IA spécialisé dans le développement web et mobile. Je suis là pour vous aider avec vos projets et répondre à vos questions sur le développeme..."
+  },
+  {
+    "timestamp": "2025-06-28T09:12:05.049Z",
+    "type": "CONFIG_READ",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-06-28T09:16:11.484Z",
+    "type": "CONFIG_READ",
+    "status": "SUCCESS"
+  },
+  {
+    "timestamp": "2025-06-28T09:29:34.172Z",
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "Discute avec moi sur le thème : Contacts.test..."
+  },
+  {
+    "timestamp": "2025-06-28T09:29:34.720Z",
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Les contacts, un élément essentiel dans notre vie quotidienne ! Dans le contexte du développement web et mobile, Contacts.test est un outil qui permet de simuler et de tester les interactions avec les..."
+  },
+  {
+    "timestamp": "2025-06-28T09:36:35.045Z",
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "test..."
+  },
+  {
+    "timestamp": "2025-06-28T09:36:35.579Z",
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Bonjour ! Je suis ravi de tester notre conversation. Je suis un assistant IA spécialisé en développement web et mobile, et je serais ravi de discuter avec vous de tout ce qui concerne le monde du déve..."
+  },
+  {
+    "timestamp": "2025-06-28T09:36:48.364Z",
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "Discute avec moi sur le thème : Paramètres.bonjour..."
+  },
+  {
+    "timestamp": "2025-06-28T09:36:48.890Z",
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Intéressant ! Les paramètres sont un élément essentiel dans le développement web et mobile. Les paramètres sont des valeurs qui définissent les comportements ou les propriétés de nos applications, nos..."
   }
 ]

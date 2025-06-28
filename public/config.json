@@ -1,0 +1,10 @@
+{
+  "telegram": {
+    "chatIdMetaPibot": "",
+    "topicIds": {
+      "general": ""
+    }
+  },
+  "debugMode": false,
+  "pollingRateMs": 2000
+}
