@@ -218,5 +218,175 @@
     "type": "GENERATE_AI",
     "status": "SUCCESS",
     "response": "Intéressant ! Les paramètres sont un élément essentiel dans le développement web et mobile. Les paramètres sont des valeurs qui définissent les comportements ou les propriétés de nos applications, nos..."
+  },
+  {
+    "type": "HEAVY_SERVICE_LAUNCH",
+    "status": "EXITED",
+    "exitCode": 1,
+    "serverTimestamp": "2025-06-28T09:49:29.067Z"
+  },
+  {
+    "type": "HEAVY_SERVICE_LAUNCH",
+    "status": "EXITED",
+    "exitCode": 1,
+    "serverTimestamp": "2025-06-28T09:49:40.658Z"
+  },
+  {
+    "type": "HEAVY_SERVICE_LAUNCH",
+    "status": "EXITED",
+    "exitCode": 1,
+    "serverTimestamp": "2025-06-28T09:51:50.517Z"
+  },
+  {
+    "type": "HTTP_REQUEST",
+    "method": "POST",
+    "url": "/generate",
+    "ip": "::1",
+    "timestamp": "2025-06-28T09:53:15.967Z",
+    "serverTimestamp": "2025-06-28T09:53:15.967Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "Discute avec moi sur le thème : Telegram.test...",
+    "serverTimestamp": "2025-06-28T09:53:15.968Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Salut ! 😊  \n\nJe suis ravi de discuter avec toi sur Telegram.test ! \n\nQu'est-ce qui t'intéresse particulièrement à propos de ce sujet ? \n\nEst-ce que tu souhaites en savoir plus sur les fonctionnalités...",
+    "serverTimestamp": "2025-06-28T09:53:16.508Z"
+  },
+  {
+    "type": "HTTP_REQUEST",
+    "method": "POST",
+    "url": "/generate",
+    "ip": "::1",
+    "timestamp": "2025-06-28T09:53:28.461Z",
+    "serverTimestamp": "2025-06-28T09:53:28.461Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "@meta_Pibot...",
+    "serverTimestamp": "2025-06-28T09:53:28.463Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Ah, je vois ! Tu parles du bot @meta_Pibot sur Telegram.  \n\nC'est un bot intéressant !  \n\nQu'aimerais-tu savoir à son sujet ?  \n\n* Ses fonctionnalités ? \n*  Comment l'utiliser ?\n*  Ce qu'il peut faire...",
+    "serverTimestamp": "2025-06-28T09:53:28.997Z"
+  },
+  {
+    "type": "HTTP_REQUEST",
+    "method": "POST",
+    "url": "/generate",
+    "ip": "::1",
+    "timestamp": "2025-06-28T09:53:45.817Z",
+    "serverTimestamp": "2025-06-28T09:53:45.818Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "bonjour...",
+    "serverTimestamp": "2025-06-28T09:53:45.819Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Bonjour ! 👋  Enchanté de te rencontrer.  Que puis-je faire pour toi aujourd'hui ? 💻📱\n\nParle-moi de ton projet web ou mobile, de tes questions techniques ou de tout ce qui concerne le développement....",
+    "serverTimestamp": "2025-06-28T09:53:46.217Z"
+  },
+  {
+    "type": "TELEGRAM_INCOMING",
+    "from": "Mickael",
+    "chatId": 5715486909,
+    "messageId": 287,
+    "content": "/chang_clim",
+    "serverTimestamp": "2025-06-28T09:56:21.392Z"
+  },
+  {
+    "type": "TELEGRAM_INCOMING",
+    "from": "Mickael",
+    "chatId": 5715486909,
+    "messageId": 288,
+    "content": "/start",
+    "serverTimestamp": "2025-06-28T09:56:25.858Z"
+  },
+  {
+    "type": "TELEGRAM_INCOMING",
+    "from": "Mickael",
+    "chatId": 5715486909,
+    "messageId": 289,
+    "content": "bonjour groq-sdk",
+    "serverTimestamp": "2025-06-28T09:56:49.317Z"
+  },
+  {
+    "type": "HTTP_REQUEST",
+    "method": "POST",
+    "url": "/command",
+    "ip": "::1",
+    "timestamp": "2025-06-28T10:03:51.409Z",
+    "serverTimestamp": "2025-06-28T10:03:51.410Z"
+  },
+  {
+    "type": "TERMINAL_COMMAND",
+    "serverTimestamp": "2025-06-28T10:03:51.415Z"
+  },
+  {
+    "type": "TERMINAL_COMMAND",
+    "status": "REJECTED",
+    "reason": "Command not allowed",
+    "serverTimestamp": "2025-06-28T10:03:51.418Z"
+  },
+  {
+    "type": "GLOBAL_ERROR",
+    "status": "ERROR",
+    "errorMessage": "Commande non autorisée: undefined",
+    "statusCode": 403,
+    "stack": "Error: Commande non autorisée: undefined\n    at /Volumes/devOps/public/canvas/test.js:178:21\n    at Layer.handle [as handle_request] (/Volumes/devOps/node_modules/express/lib/router/layer.js:95:5)\n    at next (/Volumes/devOps/node_modules/express/lib/router/route.js:149:13)\n    at Route.dispatch (/Volumes/devOps/node_modules/express/lib/router/route.js:119:3)\n    at Layer.handle [as handle_request] (/Volumes/devOps/node_modules/express/lib/router/layer.js:95:5)\n    at /Volumes/devOps/node_module...",
+    "requestUrl": "/command",
+    "requestMethod": "POST",
+    "serverTimestamp": "2025-06-28T10:03:51.429Z"
+  },
+  {
+    "type": "HTTP_REQUEST",
+    "method": "POST",
+    "url": "/generate",
+    "ip": "::1",
+    "timestamp": "2025-06-28T10:04:07.341Z",
+    "serverTimestamp": "2025-06-28T10:04:07.341Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "Discute avec moi sur le thème : Telegram.test:a...",
+    "serverTimestamp": "2025-06-28T10:04:07.343Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "\"Telegram.test:a\" me semble être un appel à l'action ou une référence à une fonctionnalité spécifique de Telegram. Pour mieux comprendre ce que vous voulez savoir, pourriez-vous préciser votre questio...",
+    "serverTimestamp": "2025-06-28T10:04:07.988Z"
+  },
+  {
+    "type": "HTTP_REQUEST",
+    "method": "POST",
+    "url": "/generate",
+    "ip": "::1",
+    "timestamp": "2025-06-28T10:16:54.116Z",
+    "serverTimestamp": "2025-06-28T10:16:54.117Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "REQUESTED",
+    "prompt": "Discute avec moi sur le thème : Paramètres.test...",
+    "serverTimestamp": "2025-06-28T10:16:54.119Z"
+  },
+  {
+    "type": "GENERATE_AI",
+    "status": "SUCCESS",
+    "response": "Salut ! 👋 \n\nJe suis ravi de discuter de paramètres.test avec toi.  Pour mieux comprendre ce dont tu as besoin, pourrais-tu me donner un peu plus de contexte ? \n\nPar exemple :\n\n* **Quel type de paramè...",
+    "serverTimestamp": "2025-06-28T10:16:54.720Z"
   }
 ]
