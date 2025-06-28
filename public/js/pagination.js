@@ -1,8 +1,9 @@
-// Définition des icônes réparties sur différentes pages
+// js/pagination.js
+
 const iconPages = [
     // Page 1
     [
-        { label: 'IA Core', iconClass: 'fa-solid fa-pencil-alt', bgColor: 'bg-blue-100', textColor: 'text-blue-700' },
+        { label: 'IA Core', iconClass: 'fa-solid fa-brain', bgColor: 'bg-blue-100', textColor: 'text-blue-700', type: 'chatbot', role: 'généraliste et amical' },
         { label: 'Audio', iconClass: 'fa-solid fa-music', bgColor: 'bg-purple-100', textColor: 'text-purple-700' },
         { label: 'Caméra', iconClass: 'fa-solid fa-camera', bgColor: 'bg-green-100', textColor: 'text-green-700' },
         { label: 'Stockage', iconClass: 'fa-solid fa-hard-drive', bgColor: 'bg-yellow-100', textColor: 'text-yellow-700' },
@@ -12,7 +13,7 @@ const iconPages = [
         { label: 'RAM', iconClass: 'fa-solid fa-memory', bgColor: 'bg-cyan-100', textColor: 'text-cyan-700' },
         { label: 'Réseau', iconClass: 'fa-solid fa-wifi', bgColor: 'bg-teal-100', textColor: 'text-teal-700' },
     ],
-    // Page 2 (Exemple d'icônes supplémentaires pour une deuxième page)
+    // Page 2
     [
         { label: 'Graphiques', iconClass: 'fa-solid fa-chart-bar', bgColor: 'bg-pink-100', textColor: 'text-pink-700' },
         { label: 'Capteurs', iconClass: 'fa-solid fa-sensor', bgColor: 'bg-indigo-100', textColor: 'text-indigo-700' },
@@ -23,11 +24,12 @@ const iconPages = [
         { label: 'Calendrier', iconClass: 'fa-solid fa-calendar', bgColor: 'bg-green-200', textColor: 'text-green-800' },
         { label: 'Contacts', iconClass: 'fa-solid fa-address-book', bgColor: 'bg-yellow-200', textColor: 'text-yellow-800' },
         { label: 'Cloud', iconClass: 'fa-solid fa-cloud', bgColor: 'bg-red-200', textColor: 'text-red-800' },
+        { label: 'WebXR', iconClass: 'fa-solid fa-cube', bgColor: 'bg-amber-100', textColor: 'text-amber-700' },
+        { label: 'Conseiller Dev', iconClass: 'fa-solid fa-code', bgColor: 'bg-cyan-200', textColor: 'text-cyan-800', type: 'chatbot', role: 'expert en développement web et mobile' },
     ]
-    // Vous pouvez ajouter d'autres pages ici
 ];
 
-let currentPage = 0; // Index de la page d'icônes actuellement affichée
+let currentPage = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     const iconPagesContainer = document.getElementById('iconPagesContainer');
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextPageBtn = document.getElementById('nextPageBtn');
     const pageIndicators = document.getElementById('pageIndicators');
 
-    // Fonction pour générer une icône individuelle
+    // --- DÉFINITION DE createIconElement ICI ---
     function createIconElement(iconData) {
         const iconItem = document.createElement('div');
         iconItem.classList.add('icon-item', 'group');
@@ -46,20 +48,41 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="icon-label">${iconData.label}</span>
         `;
         iconItem.addEventListener('click', () => {
-            // Utilise les fonctions globales exposées par index.html
-            if (window.app && window.app.promptInput && window.app.showChatScreen) {
-                window.app.promptInput.value = `Discute avec moi sur le thème : ${iconData.label}.`;
-                window.app.showChatScreen();
-                // Optionnel: déclencher l'envoi automatique si désiré
-                // document.getElementById('executeButton').click();
+            if (window.app && window.app.promptInput && window.app.showChatScreen && window.app.setLoading) {
+                if (iconData.type === 'chatbot' && window.Chatbot) {
+                    const chatbotInstance = new window.Chatbot({
+                        apiUrl: 'http://localhost:3000/generate',
+                        aiRole: iconData.role || 'assistant IA généraliste'
+                    });
+                    window.app.setActiveChatbot(chatbotInstance);
+                    window.app.showChatScreen();
+                } else if (iconData.label === 'Terminal') {
+                    const commandToExecute = prompt("Entrez la commande terminal à exécuter (ex: 'ls -la', 'pwd', 'git status'):");
+                    if (commandToExecute) {
+                        executeTerminalCommand(commandToExecute);
+                    } else {
+                        window.app.addMessage('system', 'Exécution de commande annulée.');
+                        window.app.showChatScreen();
+                    }
+                } else if (iconData.label === 'WebXR') {
+                    window.app.startWebXRSession();
+                }
+                else {
+                    window.app.promptInput.value = `Discute avec moi sur le thème : ${iconData.label}.`;
+                    window.app.showChatScreen();
+                }
+            } else {
+                console.error("window.app ou window.Chatbot n'est pas complètement initialisé.");
+                window.app.addMessage('error', "Erreur interne: l'application n'est pas prête.");
             }
         });
         return iconItem;
     }
+    // --- FIN DE DÉFINITION DE createIconElement ---
 
-    // Fonction pour rendre les icônes de la page actuelle
+    // --- DÉFINITION DE renderIcons ICI (qui appelle createIconElement) ---
     function renderIcons() {
-        iconPagesContainer.innerHTML = ''; // Efface les icônes existantes
+        iconPagesContainer.innerHTML = '';
         const iconsToRender = iconPages[currentPage];
 
         if (iconsToRender) {
@@ -69,24 +92,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updatePaginationControls();
     }
+    // --- FIN DE DÉFINITION DE renderIcons ---
 
-    // Fonction pour mettre à jour l'état des boutons de pagination et des indicateurs
+    // --- DÉFINITION DE updatePaginationControls ICI ---
     function updatePaginationControls() {
+        // Logique de mise à jour des boutons prev/next et des indicateurs de page
         prevPageBtn.disabled = currentPage === 0;
         nextPageBtn.disabled = currentPage === iconPages.length - 1;
 
-        pageIndicators.innerHTML = ''; // Efface les indicateurs existants
-        for (let i = 0; i < iconPages.length; i++) {
-            const dot = document.createElement('span');
-            dot.classList.add('w-2', 'h-2', 'rounded-full', 'bg-gray-400');
-            if (i === currentPage) {
-                dot.classList.add('bg-blue-500'); // Couleur pour la page active
+        pageIndicators.innerHTML = '';
+        iconPages.forEach((_, index) => {
+            const indicator = document.createElement('span');
+            indicator.classList.add('w-2.5', 'h-2.5', 'rounded-full', 'inline-block', 'mx-1');
+            if (index === currentPage) {
+                indicator.classList.add('bg-blue-500');
+            } else {
+                indicator.classList.add('bg-gray-400');
             }
-            pageIndicators.appendChild(dot);
+            pageIndicators.appendChild(indicator);
+        });
+    }
+    // --- FIN DE DÉFINITION DE updatePaginationControls ---
+
+
+    // --- DÉFINITION DE executeTerminalCommand ICI ---
+    async function executeTerminalCommand(command) {
+        window.app.showChatScreen();
+        window.app.addMessage('user', `Exécution de commande: \`${command}\``);
+        window.app.setLoading(true);
+
+        try {
+            const response = await fetch('http://localhost:3000/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ command: command }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Erreur serveur lors de la commande:', errorData.stack || errorData.message);
+                throw new Error(errorData.error || errorData.message || `Erreur HTTP: ${response.status}`);
+            }
+
+            const data = await response.json();
+            if (data.stdout) {
+                window.app.addMessage('ai', `Sortie de la commande:\n\`\`\`\n${data.stdout}\n\`\`\``);
+            }
+            if (data.stderr) {
+                window.app.addMessage('system', `Erreurs (stderr):\n\`\`\`\n${data.stderr}\n\`\`\``);
+            }
+            if (!data.stdout && !data.stderr) {
+                window.app.addMessage('ai', `La commande "${command}" s'est exécutée sans sortie.`);
+            }
+
+        } catch (error) {
+            console.error('Erreur lors de l\'exécution de la commande :', error);
+            window.app.addMessage('error', `Erreur lors de l'exécution de la commande "${command}" : ${error.message}`);
+        } finally {
+            window.app.setLoading(false);
         }
     }
+    // --- FIN DE DÉFINITION DE executeTerminalCommand ---
 
-    // Écouteur pour le bouton "Page Précédente"
+
+    // Écouteurs d'événements pour la pagination
     prevPageBtn.addEventListener('click', () => {
         if (currentPage > 0) {
             currentPage--;
@@ -94,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Écouteur pour le bouton "Page Suivante"
     nextPageBtn.addEventListener('click', () => {
         if (currentPage < iconPages.length - 1) {
             currentPage++;
@@ -102,6 +172,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Rendre la première page d'icônes au chargement
-    renderIcons();
+    renderIcons(); // Appel initial pour afficher la première page d'icônes
 });

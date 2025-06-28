@@ -82,5 +82,95 @@
     "interactionId": "72627f06-652d-4785-a498-9a3de0eb8d84",
     "userPrompt": "Discute avec moi sur le thème : Caméra. > run...",
     "aiResponse": "Bonjour ! Je suis ravi de discuter avec vous sur le thème de la camera.\n\nQu'est-ce que vous aimeriez savoir ou discuter sur ce sujet ? La programmation d'une camera, les formats de fichiers, les algor..."
+  },
+  {
+    "timestamp": "2025-06-28T07:35:16.939Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "Discute avec moi sur le thème : Paramètres.test..."
+  },
+  {
+    "timestamp": "2025-06-28T07:35:17.534Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "333b43b6-3ed7-4921-8dc2-ea3036e7494a",
+    "userPrompt": "Discute avec moi sur le thème : Paramètres.test...",
+    "aiResponse": "Un sujet très intéressant !\n\nParamètres.test est un framework de test pour Laravel, un framework web PHP populaire. Il permet de créer facilement des tests unitaires et de intégration pour votre appli..."
+  },
+  {
+    "timestamp": "2025-06-28T08:36:26.260Z",
+    "type": "CRUD_READ_ALL",
+    "status": "SUCCESS",
+    "count": 0
+  },
+  {
+    "timestamp": "2025-06-28T08:43:38.654Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "Discute avec moi sur le thème : bonjour..."
+  },
+  {
+    "timestamp": "2025-06-28T08:43:39.178Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "3dcc96ad-6f14-4102-b214-edd6bc4f88bc",
+    "userPrompt": "Discute avec moi sur le thème : bonjour...",
+    "aiResponse": "Bonjour ! Comment allez-vous aujourd'hui ? Qu'est-ce que vous aimez faire pour bien commencer la journée ?..."
+  },
+  {
+    "timestamp": "2025-06-28T08:44:46.456Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "test..."
+  },
+  {
+    "timestamp": "2025-06-28T08:44:46.860Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "400a36da-0276-4f0f-bc35-f5ba31884a05",
+    "userPrompt": "test...",
+    "aiResponse": "Bonjour ! Je suis ravi de faire votre connaissance. Je suis un assistant IA expert en développement et en conseil technique, et je suis là pour vous aider avec vos questions et vos besoins en matière ..."
+  },
+  {
+    "timestamp": "2025-06-28T08:44:50.412Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "bonour..."
+  },
+  {
+    "timestamp": "2025-06-28T08:44:50.678Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "baf351c7-6a37-478d-855e-34068ada126d",
+    "userPrompt": "bonour...",
+    "aiResponse": "Bonjour ! Je suis ravi de vous aider avec vos questions et vos besoins en matière de programmation, d'architecture logicielle et de technologies web. Qu'est-ce que vous souhaitez discuter ou apprendre..."
+  },
+  {
+    "timestamp": "2025-06-28T08:45:01.536Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "> bonjour..."
+  },
+  {
+    "timestamp": "2025-06-28T08:45:01.867Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "a289a950-53b1-40c0-b597-38de5659713f",
+    "userPrompt": "> bonjour...",
+    "aiResponse": "Bonjour ! Je suis ravi de vous accueillir. Je suis un assistant IA expert en développement et en conseil technique, au service de vos questions et de vos besoins en programmation, architecture logicie..."
+  },
+  {
+    "timestamp": "2025-06-28T08:45:23.729Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "bonjour..."
+  },
+  {
+    "timestamp": "2025-06-28T08:45:24.041Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "7b36f070-202e-41a0-bd87-602157f47fa3",
+    "userPrompt": "bonjour...",
+    "aiResponse": "Bonjour ! Je suis ravi de vous voir ! Je suis un assistant IA spécialisé dans le développement web et mobile. Je suis là pour vous aider avec vos projets et répondre à vos questions sur le développeme..."
   }
 ]
