@@ -1,0 +1,86 @@
+[
+  {
+    "timestamp": "2025-06-28T06:07:59.901Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "test..."
+  },
+  {
+    "timestamp": "2025-06-28T06:08:00.417Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "8efa3df6-3a38-45a3-86e8-b4ff4a9eb5b0",
+    "userPrompt": "test...",
+    "aiResponse": "Tout est bien ! C'est avec plaisir que je serai votre assistant IA pour répondre à vos questions sur le développement, l'architecture logicielle et les technologies web. Que souhaitez-vous savoir ou d..."
+  },
+  {
+    "timestamp": "2025-06-28T06:08:47.841Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "test..."
+  },
+  {
+    "timestamp": "2025-06-28T06:08:48.363Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "01e7ba8d-64d6-4c81-b192-47d8d85a344b",
+    "userPrompt": "test...",
+    "aiResponse": "Bonjour ! Je suis ravi de vous rencontrer. Je suis un assistant IA expert en développement et en conseil technique, et je serais ravi de vous aider avec vos questions ou de vous fournir des informatio..."
+  },
+  {
+    "timestamp": "2025-06-28T06:16:11.158Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "/index.html..."
+  },
+  {
+    "timestamp": "2025-06-28T06:16:11.931Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "bdd52643-eebc-4838-8411-69b0b3063371",
+    "userPrompt": "/index.html...",
+    "aiResponse": "La page racine !\n\n/index.html est un fichier HTML standard qui est souvent utilisé comme page d'accueil pour un site web. Il est situé à la racine du répertoire du site web et est souvent le premier f..."
+  },
+  {
+    "timestamp": "2025-06-28T06:17:40.459Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "Discute avec moi sur le thème : Terminal...."
+  },
+  {
+    "timestamp": "2025-06-28T06:17:41.049Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "efb0cc65-6af7-4fe4-a3e4-f77428fc8d5b",
+    "userPrompt": "Discute avec moi sur le thème : Terminal....",
+    "aiResponse": "Un thème classique et fascinant ! Le terminal, également connu sous le nom de console ou de prompt de commande, est l'interface utilisateur la plus basique et la plus puissante d'un système d'exploita..."
+  },
+  {
+    "timestamp": "2025-06-28T06:30:51.624Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "Discute avec moi sur le thème : Caméra. : comment intégret le CDN webWR pour..."
+  },
+  {
+    "timestamp": "2025-06-28T06:30:52.787Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "10c7085b-8114-4dd2-abdc-818c0ec3b4d7",
+    "userPrompt": "Discute avec moi sur le thème : Caméra. : comment intégret le CDN webWR pour...",
+    "aiResponse": "Un sujet passionnant ! La caméra est un élément essentiel dans de nombreux domaines, y compris la sécurité, les médias, les jeux vidéo, etc.\n\nPour intégrer un CDN (Content Delivery Network) pour une c..."
+  },
+  {
+    "timestamp": "2025-06-28T06:33:00.052Z",
+    "type": "AI_INTERACTION",
+    "status": "REQUESTED",
+    "userPrompt": "Discute avec moi sur le thème : Caméra. > run..."
+  },
+  {
+    "timestamp": "2025-06-28T06:33:00.564Z",
+    "type": "AI_INTERACTION",
+    "status": "SUCCESS",
+    "interactionId": "72627f06-652d-4785-a498-9a3de0eb8d84",
+    "userPrompt": "Discute avec moi sur le thème : Caméra. > run...",
+    "aiResponse": "Bonjour ! Je suis ravi de discuter avec vous sur le thème de la camera.\n\nQu'est-ce que vous aimeriez savoir ou discuter sur ce sujet ? La programmation d'une camera, les formats de fichiers, les algor..."
+  }
+]

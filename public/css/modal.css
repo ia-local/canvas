@@ -1,0 +1,121 @@
+/* Styles pour l'overlay du modal (arrière-plan sombre) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Assure que le modal est au-dessus de tout */
+    backdrop-filter: blur(5px); /* Effet de flou sur l'arrière-plan */
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    pointer-events: none; /* Permet les clics à travers l'overlay quand il est caché */
+}
+
+/* Rendre le modal visible */
+.modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Styles pour le contenu du modal */
+.modal-content {
+    position: relative; /* Pour positionner le bouton de fermeture */
+    background-color: white;
+    padding: 2.5rem; /* Augmenter le padding pour plus d'espace */
+    border-radius: 1rem; /* Bords plus arrondis */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Ombre plus prononcée */
+    max-width: 90%; /* Largeur maximale pour le contenu */
+    max-height: 90vh; /* Hauteur maximale pour le contenu */
+    overflow-y: auto; /* Permet le défilement si le contenu est trop grand */
+    transform: scale(0.95); /* Légèrement plus petit à l'ouverture */
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.modal-overlay.visible .modal-content {
+    transform: scale(1) translate(-50%, -50%); /* Revenir à la taille normale et centrer */
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+}
+
+
+/* Styles pour les éléments d'icônes individuels */
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    padding: 0.5rem; /* Padding autour de l'icône et du label */
+    border-radius: 0.75rem; /* Bords légèrement arrondis pour l'item */
+}
+
+.icon-item:hover {
+    transform: translateY(-5px); /* Effet de "pop" au survol */
+    background-color: rgba(0, 0, 0, 0.05); /* Légère couleur de fond au survol */
+}
+
+.icon-box {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px; /* Coins arrondis pour la boîte de l'icône */
+    margin-bottom: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Petite ombre pour la boîte */
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.icon-item:hover .icon-box {
+    transform: scale(1.05); /* Agrandissement de la boîte au survol */
+}
+
+.icon-label {
+    font-size: 0.8rem;
+    color: #4a5568; /* couleur gray-700 de tailwind */
+    font-weight: 500;
+    white-space: nowrap; /* Empêche le retour à la ligne pour le label */
+    overflow: hidden; /* Cache le texte qui dépasse */
+    text-overflow: ellipsis; /* Ajoute des points de suspension si le texte est tronqué */
+}
+
+/* Styles pour le bouton de fermeture */
+.modal-content button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Media Queries pour le responsive design du modal */
+@media (max-width: 640px) { /* Pour les très petits écrans, comme les téléphones */
+    .modal-content {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+    .icon-box {
+        width: 56px;
+        height: 56px;
+    }
+    .icon-label {
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) { /* Pour les petits tablettes ou plus grands téléphones */
+    .modal-content {
+        padding: 2rem;
+    }
+    .icon-box {
+        width: 60px;
+        height: 60px;
+    }
+}

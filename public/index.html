@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas de Conversation Responsive</title>
+    <!-- Chargement de Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chargement de Font Awesome (pour des icônes variées au format SVG) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Chargement du polyfill WebXR Device API pour une meilleure compatibilité -->
+    <!-- Note: Pour un environnement de production réel, envisagez une installation locale ou un CDN plus robuste. -->
+    <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
+    <style>
+        /* Configuration de la police Inter via Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Styles pour les éléments d'icônes individuels (intégrés) */
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            padding: 0.5rem; /* Padding autour de l'icône et du label */
+            border-radius: 0.75rem; /* Bords légèrement arrondis pour l'item */
+        }
+
+        .icon-item:hover {
+            transform: translateY(-5px); /* Effet de "pop" au survol */
+            background-color: rgba(0, 0, 0, 0.05); /* Légère couleur de fond au survol */
+        }
+
+        .icon-box {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px; /* Coins arrondis pour la boîte de l'icône */
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Petite ombre pour la boîte */
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .icon-item:hover .icon-box {
+            transform: scale(1.05); /* Agrandissement de la boîte au survol */
+        }
+
+        .icon-label {
+            font-size: 0.8rem;
+            color: #4a5568; /* couleur gray-700 de tailwind */
+            font-weight: 500;
+            white-space: nowrap; /* Empêche le retour à la ligne pour le label */
+            overflow: hidden; /* Cache le texte qui dépasse */
+            text-overflow: ellipsis; /* Ajoute des points de suspension si le texte est tronqué */
+        }
+
+        /* Media Queries pour la responsivité des icônes */
+        @media (max-width: 640px) { /* Pour les très petits écrans, comme les téléphones */
+            .icon-box {
+                width: 56px;
+                height: 56px;
+            }
+            .icon-label {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col p-4 sm:p-6 lg:p-8">
+
+    <!-- Header for the application -->
+    <header class="bg-white shadow-md rounded-lg p-4 mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-center text-gray-800">
+            Canvas de Conversation IA
+        </h1>
+        <p class="text-center text-gray-600 mt-2">
+            Interagissez avec l'IA et visualisez les réponses
+        </p>
+    </header>
+
+    <!-- Main container for the two columns -->
+    <main class="flex-grow flex flex-col lg:flex-row gap-6">
+
+        <!-- Left Column: Code/Prompt Input Area -->
+        <section class="flex-1 bg-white p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                Votre Prompt
+            </h2>
+            <textarea id="promptInput"
+                      class="flex-grow bg-gray-800 text-white p-4 rounded-md overflow-auto text-sm sm:text-base leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Tapez votre question ou votre code ici pour l'IA..."
+                      rows="10"></textarea>
+            <button id="executeButton"
+                    class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center">
+                <span id="buttonText">Exécuter le Prompt</span>
+                <svg id="loadingSpinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </button>
+            <div id="errorMessage" class="text-red-500 mt-2 hidden"></div>
+        </section>
+
+        <!-- Right Column: Responsive Mobile Preview -->
+        <aside class="flex-1 bg-white p-4 sm:p-6 rounded-lg shadow-md flex flex-col">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-700 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Prévisualisation du Téléphone
+            </h2>
+            <div class="flex-grow border-2 border-gray-300 rounded-lg overflow-hidden relative flex items-center justify-center p-4">
+                <!-- Frame simulating a mobile phone -->
+                <div class="w-full h-full max-w-sm max-h-[600px] bg-gray-200 rounded-xl shadow-lg border-4 border-gray-400 flex flex-col overflow-hidden">
+                    <!-- Top bar of the phone -->
+                    <div class="bg-gray-700 h-8 flex items-center justify-center text-white text-xs font-semibold rounded-t-lg">
+                        <span class="mr-2">9:41 AM</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span class="ml-2">5G</span>
+                    </div>
+
+                    <!-- Content area of the phone -->
+                    <div class="flex-grow bg-white relative">
+                        <!-- Android Home Screen (Menu d'icônes paginé) -->
+                        <div id="androidHomeScreen" class="absolute inset-0 flex flex-col items-center justify-center p-4">
+                             <!-- Conteneur pour les icônes paginées -->
+                            <div id="iconPagesContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full max-w-md">
+                                <!-- Icônes générées dynamiquement par pagination.js -->
+                            </div>
+                            <!-- Indicateurs de page et boutons de navigation -->
+                            <div class="flex items-center justify-center mt-4 space-x-2">
+                                <button id="prevPageBtn" class="bg-gray-300 text-gray-800 p-2 rounded-full shadow hover:bg-gray-400 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-chevron-left text-lg"></i>
+                                </button>
+                                <div id="pageIndicators" class="flex space-x-1">
+                                    <!-- Indicateurs de page (points) générés par JS -->
+                                </div>
+                                <button id="nextPageBtn" class="bg-gray-300 text-gray-800 p-2 rounded-full shadow hover:bg-gray-400 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-chevron-right text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Chat Conversation Area -->
+                        <div id="chatContentContainer" class="absolute inset-0 hidden flex flex-col p-4 overflow-y-auto">
+                            <div id="chatMessages" class="flex-grow flex flex-col space-y-2">
+                                <!-- Messages will be injected here by JavaScript -->
+                                <div class="bg-gray-100 p-3 rounded-lg text-gray-700 text-sm">
+                                    <p>Bienvenue ! Sélectionnez un outil ou posez votre question à l'IA.</p>
+                                </div>
+                            </div>
+                             <!-- Section pour l'affichage WebXR, initiallement cachée -->
+                            <div id="webXRDisplay" class="absolute inset-0 bg-black hidden flex items-center justify-center text-white text-center">
+                                <p>WebXR Content Here<br>(Requires a WebXR-compatible device and browser)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom bar of the phone -->
+                    <div class="bg-gray-700 h-6 rounded-b-lg flex items-center justify-center">
+                        <button id="homeButton" class="bg-gray-600 text-white p-1.5 rounded-full shadow-lg hover:bg-gray-500 transition duration-300">
+                            <i class="fa-solid fa-house text-lg"></i> <!-- Icône pour retourner à l'accueil -->
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-6 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 Canvas de Conversation. Tous droits réservés.</p>
+    </footer>
+
+    <!-- Votre script principal pour le Canvas -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const promptInput = document.getElementById('promptInput');
+            const executeButton = document.getElementById('executeButton');
+            const chatMessages = document.getElementById('chatMessages');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const buttonText = document.getElementById('buttonText');
+            const errorMessageDiv = document.getElementById('errorMessage');
+
+            // Nouveaux éléments pour la gestion de l'écran d'accueil et du chat
+            const androidHomeScreen = document.getElementById('androidHomeScreen');
+            const chatContentContainer = document.getElementById('chatContentContainer');
+            const homeButton = document.getElementById('homeButton');
+            const webXRDisplay = document.getElementById('webXRDisplay'); // Nouveau: Élément pour l'affichage WebXR
+
+            // Fonction pour ajouter un message à l'affichage du chat
+            function addMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('p-3', 'rounded-lg', 'text-sm');
+
+                if (sender === 'user') {
+                    messageDiv.classList.add('bg-blue-100', 'text-blue-800', 'self-end', 'ml-auto', 'max-w-[85%]');
+                    messageDiv.innerHTML = `<p>${text}</p>`;
+                } else if (sender === 'ai') {
+                    messageDiv.classList.add('bg-green-100', 'text-green-800', 'self-start', 'mr-auto', 'max-w-[85%]');
+                    messageDiv.innerHTML = `<p>${text}</p>`;
+                } else if (sender === 'system') {
+                    messageDiv.classList.add('bg-yellow-100', 'text-yellow-800', 'text-center', 'max-w-full');
+                    messageDiv.innerHTML = `<p>${text}</p>`;
+                }
+
+                chatMessages.appendChild(messageDiv);
+                // Scroll to the bottom of the chat messages
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Fonction pour afficher l'écran d'accueil Android et cacher le chat
+            function showHomeScreen() {
+                androidHomeScreen.classList.remove('hidden');
+                chatContentContainer.classList.add('hidden');
+                webXRDisplay.classList.add('hidden'); // S'assurer que l'affichage WebXR est caché
+            }
+
+            // Fonction pour afficher le conteneur de chat et cacher l'écran d'accueil
+            function showChatScreen() {
+                androidHomeScreen.classList.add('hidden');
+                chatContentContainer.classList.remove('hidden');
+                webXRDisplay.classList.add('hidden'); // S'assurer que l'affichage WebXR est caché
+            }
+
+            // Nouveau: Fonction pour afficher l'écran WebXR
+            function showWebXRScreen() {
+                androidHomeScreen.classList.add('hidden');
+                chatContentContainer.classList.add('hidden');
+                webXRDisplay.classList.remove('hidden');
+            }
+
+
+            // Fonction pour afficher/masquer le spinner de chargement et désactiver/activer le bouton
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    buttonText.textContent = 'Envoi...';
+                    loadingSpinner.classList.remove('hidden');
+                    executeButton.disabled = true;
+                    errorMessageDiv.classList.add('hidden'); // Hide any previous error messages
+                } else {
+                    buttonText.textContent = 'Exécuter le Prompt';
+                    loadingSpinner.classList.add('hidden');
+                    executeButton.disabled = false;
+                }
+            }
+
+            // Écouteur d'événement pour le bouton d'exécution du prompt
+            executeButton.addEventListener('click', async () => {
+                const prompt = promptInput.value.trim();
+
+                if (!prompt) {
+                    errorMessageDiv.textContent = "Veuillez saisir un prompt.";
+                    errorMessageDiv.classList.remove('hidden');
+                    return;
+                }
+
+                showChatScreen(); // Basculer vers l'écran de chat
+                setLoading(true);
+                addMessage('user', prompt); // Afficher le message de l'utilisateur immédiatement
+                promptInput.value = ''; // Effacer le champ de saisie
+
+                try {
+                    const response = await fetch('http://localhost:3000/generate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ prompt: prompt }),
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || `Erreur HTTP: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    addMessage('ai', data.response); // Afficher la réponse de l'IA
+
+                } catch (error) {
+                    console.error('Erreur lors de la communication avec le backend :', error);
+                    errorMessageDiv.textContent = `Erreur : ${error.message}. Assurez-vous que votre serveur backend est bien démarré sur http://localhost:3000.`;
+                    errorMessageDiv.classList.remove('hidden');
+                    addMessage('system', `Une erreur est survenue lors de la récupération de la réponse : ${error.message}`);
+                } finally {
+                    setLoading(false);
+                }
+            });
+
+            // Permettre l'envoi du message en appuyant sur Entrée
+            promptInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { // Envoyer avec Entrée, pas Maj+Entrée
+                    e.preventDefault(); // Empêcher le retour à la ligne
+                    executeButton.click();
+                }
+            });
+
+            // Écouteur d'événement pour le bouton "Accueil"
+            homeButton.addEventListener('click', showHomeScreen);
+
+            // La logique des icônes sera gérée par pagination.js
+            // Nous passons les fonctions nécessaires à pagination.js
+            window.app = {
+                addMessage: addMessage,
+                showChatScreen: showChatScreen,
+                showWebXRScreen: showWebXRScreen, // Nouveau: Passer la fonction showWebXRScreen
+                promptInput: promptInput, // Pour permettre à pagination.js de modifier le prompt
+                // Fonction pour gérer le démarrage de l'expérience WebXR
+                startWebXRSession: async function() {
+                    if (navigator.xr) {
+                        try {
+                            // Demander la disponibilité du mode 'immersive-ar'
+                            const isARSupported = await navigator.xr.isSessionSupported('immersive-ar');
+                            if (isARSupported) {
+                                showWebXRScreen(); // Afficher l'écran WebXR simulé
+                                addMessage('system', 'Tente de démarrer une session AR immersive. (Nécessite un appareil compatible WebXR)');
+                                // Ici, dans un vrai projet, vous démarreriez la session XR
+                                // const session = await navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor'] });
+                                // handleXRSession(session);
+                            } else {
+                                addMessage('system', 'Le mode AR immersif n\'est pas supporté sur cet appareil/navigateur.');
+                                console.warn('WebXR AR Immersive session not supported.');
+                                showChatScreen(); // Revenir à l'écran de chat si non supporté
+                            }
+                        } catch (e) {
+                            addMessage('system', `Erreur lors de la vérification/démarrage de la session AR: ${e.message}`);
+                            console.error('Error requesting AR session:', e);
+                            showChatScreen(); // Revenir à l'écran de chat en cas d'erreur
+                        }
+                    } else {
+                        addMessage('system', 'WebXR n\'est pas disponible sur ce navigateur. Veuillez utiliser un navigateur compatible (ex: Chrome sur Android).');
+                        console.warn('WebXR not available.');
+                        showChatScreen(); // Revenir à l'écran de chat si non disponible
+                    }
+                }
+            };
+        });
+    </script>
+    <!-- Chargement de votre script de pagination -->
+    <script src="js/pagination.js"></script>
+</body>
+</html>
